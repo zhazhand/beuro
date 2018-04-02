@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="bpApp">
+
+<head>
+    <title>БЮРО ПУТЕШЕСТВИЙ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div ng-view></div>
+    </div>
+    <script src="/bootstrap/js/jquery.min.js"></script>
+    <script src="/angular/angular.min.js"></script>
+    <script src="/angular/angular-locale_ru-ru.js"></script>
+    <script src="/lib/angular-route.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="/lib/xlsx.core.min.js"></script>
+    <script src="app.js"></script>
+    <script src="/home/home.controller.js"></script>
+    <script src="/controllers/manager.controller.js"></script>
+    <script src="/controllers/admin.controller.js"></script>
+    <script src="/controllers/ban.controller.js"></script>
+    <script src="/controllers/table.controller.js"></script>
+    <script src="/controllers/list.controller.js"></script>
+    <script src="/controllers/fullList.controller.js"></script>
+    <script src="/common/services/bpData.service.js"></script>
+    <script src="/common/services/bpManagers.service.js"></script>
+    <script src="/common/services/addNewManager.service.js"></script>
+    <script src="/common/filters/yesOrNo.filter.js"></script>
+    <script src="/common/filters/timeDuration.filter.js"></script>
+    <script src="/common/directives/deepIdentification.directive.js"></script>
+    <script src="/common/directives/questioning.directive.js"></script>
+    <script src="/common/directives/touristWishes.directive.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

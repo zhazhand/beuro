@@ -1,0 +1,55 @@
+<div>
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <td class="text-right">отдых в (стране)</td>
+                <td class="text-capitalize">{{client.country}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">в период</td>
+                <td>с&nbsp;{{client.tripStart | date : "dd MMMM"}}&nbsp;&nbsp;&nbsp;до&nbsp;{{client.tripEnd | date : "dd MMMM"}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">ночей</td>
+                <td><span ng-if="client.tripDurationFrom">от&nbsp;{{client.tripDurationFrom}}</span>&nbsp;&nbsp;&nbsp;<span ng-if="client.tripDurationTo">до&nbsp;{{client.tripDurationTo}}</span></td>
+            </tr>
+            <tr>
+                <td class="text-right">человек</td>
+                <td>{{client.quantity}}</td>
+            </tr>
+            <tr ng-if="client.hasChildren">
+                <td class="text-right">из них детей</td>
+                <td>{{client.childrenQuantity}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">город вылета</td>
+                <td>{{client.favoriteAirports || "любой"}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">предпочтительный регион</td>
+                <td>{{client.favoriteRegion || "любой"}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">линия отеля</td>
+                <td>{{client.hotelLine}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">уровень отеля</td>
+                <td><span ng-repeat="tag in client.hotelStars">{{tag || "НЕ УКАЗАНО"}}, </span></td>
+            </tr>
+            <tr>
+                <td class="text-right">тип отеля и его особенности</td>
+                <td><span ng-repeat="type in client.hotelTypes">{{type || "НЕ УКАЗАНО"}}, </span></td>
+            </tr>
+            <tr>
+                <td class="text-right">сам отель, в принципе,</td>
+                <td>{{client.hotelRate}}</td>
+            </tr>
+            <tr>
+                <td class="text-right">Ваши личные пожелания</td>
+                <td><textarea cols="90" rows="1" placeholder="Повторяем пожелания клиента, если нужно редактируем (их)" ng-model="client.wishes">
+                    </textarea></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

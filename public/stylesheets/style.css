@@ -1,0 +1,73 @@
+.admin-panel td > input {
+    border-color: transparent;
+    background-color: transparent;
+    padding: 5px;
+}
+.admin-panel td > input:focus {
+    border: 2px solid #61b7ed;
+    background-color: #b4fcff;
+}
+.admin-panel td > input:focus:hover {
+    border: 2px solid #61b7ed;
+    background-color: #b4fcff;
+}
+.admin-panel td:hover > input {
+    border: inherit;
+    background-color: #fff;
+}
+.ban p {
+    font-weight: 700;
+    font-size: 30px;
+    color: #b42020;
+}
+p {
+    font-size: 19px;
+    padding: 12px 0;
+}
+.fw-bold {
+    font-weight: bold;
+}
+.client {
+    color: darkgreen;
+    font-weight: 500;
+    font-size: 21px;
+    background-color: chartreuse;
+    text-transform: capitalize;
+}
+.clientTb {
+    font-weight: 500;
+    font-size: 21px;
+    text-transform: capitalize;
+}
+.startData {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+caption.manager > .clientTb {
+    text-transform: none;
+    color: #fff;
+}
+.myFooter {
+    background-color: #2d6ca2;
+}
+.bodyHeight {
+    min-height: 70vh;
+}
+.number {
+    color: navy;
+    font-weight: 600;
+    font-size: 21px;
+}
+.panel-footer {
+    background-image: url(../images/fon_footer.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    min-height: 2vh;
+}
+.panel-footer p {
+    color: #fff;
+    padding: 12px 0 0 0;
+    margin: 16px 0 0;
+    font-size: 11px;
+}

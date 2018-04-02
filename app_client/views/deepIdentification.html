@@ -1,0 +1,192 @@
+<div ng-if="client.wishes">
+    <p>Скажите, как часто Вы ездите отдыхать?</p>
+    <p class="text-center">
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.restFrequency" name="client.restFrequency" value="Один раз в год">Один раз в год
+        </label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.restFrequency" name="client.restFrequency" value="Два раза в год">Два раза в год
+        </label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.restFrequency" name="client.restFrequency" value="Несколько раз (>2) в год">Несколько раз (>2) в год
+        </label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.restFrequency" name="client.restFrequency" value="Раз в несколько лет">Раз в несколько лет
+        </label>
+    </p>
+</div>
+<hr ng-if="client.wishes">
+<div ng-if="client.restFrequency">
+    <p>
+        <span class="client">{{client.firstName}}</span>, Вы уже отдыхали в <span class="client">{{client.country}}</span>?
+    </p>
+    <p class="text-center">
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.countryErVis" name="clientCountyEarlyVisit" ng-value=true ng-change="client.endTalkRequirements()">Да
+        </label>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.countryErVis" name="clientCountyEarlyVisit" ng-value=false ng-change="client.endTalkRequirements()">Нет
+        </label>
+    </p>
+</div>
+<hr ng-if="client.restFrequency">
+<div ng-if="client.countryErVis">
+    <p>В каких отелях были?</p>
+    <div class="row startData">
+        <div class="col-xs-10 col-xs-offset-1">
+            <textarea cols="140" rows="3" placeholder="Отели, ранее посещенные туристом" ng-model="client.earlyHotels">
+            </textarea>
+        </div>
+    </div>
+    <hr>
+    <p ng-if="client.earlyHotels">Что понравилось? (почему?)</p>
+    <div class="row startData" ng-if="client.earlyHotels">
+        <div class="col-xs-10 col-xs-offset-1">
+            <textarea cols="140" rows="3" placeholder="Что понравилось в ранее посещенных отелях и в стране" ng-model="client.earlyHotelsPlus">
+            </textarea>
+        </div>
+    </div>
+    <hr ng-if="client.earlyHotels">
+    <p ng-if="client.earlyHotelsPlus">Что не понравилось? (почему?)</p>
+    <div class="row startData" ng-if="client.earlyHotelsPlus">
+        <div class="col-xs-10 col-xs-offset-1">
+            <textarea cols="140" rows="3" placeholder="Что НЕ понравилось в ранее посещенных отелях и в стране" ng-model="client.earlyHotelsMinus">
+            </textarea>
+        </div>
+    </div>
+    <hr ng-if="client.earlyHotelsPlus">
+</div>
+<div ng-if="!client.countryErVis&&page.step1||client.earlyHotelsMinus">
+    <p>
+        <span ng-if="!client.countryErVis">А в каких странах</span><span ng-if="client.countryErVis">В каких странах ещё</span> были (отдыхали)?
+    </p>
+    <p>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.countryVisited" name="clientCountyVisitedEarly" ng-change="page.changeCountryVisited(true)" ng-value=false>Ни в каких
+        </label>
+        <label class="radio-inline">
+            <input type="radio" ng-model="client.countryVisited" name="clientCountyVisitedEarly" ng-value=true>Выбрать
+        </label>
+    </p>
+    <hr ng-if="client.countryVisited">
+    <div class="row" ng-if="client.countryVisited">
+        <div class="col-sm-2 col-sm-offset-1">
+            <select size="7" multiple ng-change="page.toSelectCountries()" name="countries[]" ng-model="client.selectCountries" ng-options="item.name for item in countries">
+            </select>
+        </div>
+        <div class="col-xs-5">
+            <p class="text-info">
+                Чтобы выбрать (или удалить из выбранных),- кликайте по странам с зажатой клавишей
+                <button type="button" class="btn btn-default">Ctrl</button>.
+                <br>Результат выбора можете посмотреть в блоке справа &rarr;
+            </p>
+        </div>
+        <div class="col-xs-2">
+            <ol>
+                <li ng-repeat="x in page.earlyCountries">{{x}}</li>
+            </ol>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <hr ng-if="client.countryVisited&&page.earlyCountries.length">
+    <div ng-if="client.countryVisited&&page.earlyCountries.length">
+        <p>В каких отелях останавливались? Что понравилось? Что не понравилось?</p>
+        <div class="row startData">
+            <div class="col-xs-10 col-xs-offset-1">
+                <textarea cols="140" rows="3" placeholder="Запомнившиеся особенности отдыха в другой стране" ng-model="client.otherRestFeatures">
+                </textarea>
+            </div>
+        </div>
+    </div>
+    <hr ng-if="client.countryVisited&&page.earlyCountries.length">
+</div>
+
+<div ng-if="page.step2||client.otherRestFeatures">
+    <p>С кем Вы обычно отдыхаете?</p>
+    <p class="text-center">
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с мужем (женой)">С мужем (женой)</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с детьми">С детьми</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с подругой">С подругой</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с мамой">С мамой</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с родителями">С родителями</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с семьёй">С семьёй</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="с друзьями">С друзьями</label>
+        <br>
+        <label class="radio-inline">
+            <input type="radio" name="clientSputnic" ng-model="client.sputnic" value="один (одна)">Один (одна)</label>
+    </p>
+    <hr>
+</div>
+<div ng-if="client.sputnic">
+    <p>Как Вы обычно принимаете решение: самостоятельно или вместе с семьей?</p>
+    <p class="text-center">
+        <label class="radio-inline">
+            <input type="radio" name="makeDecisions" ng-model="client.makeDecisions" value="самостоятельно">самостоятельно
+        </label>&nbsp;&nbsp;&nbsp;
+        <label class="radio-inline">
+            <input type="radio" name="makeDecisions" ng-model="client.makeDecisions" value="вместе с семьей">вместе с семьей
+        </label>
+    </p>
+</div>
+<div ng-if="client.makeDecisions">
+    <p><span class="client">{{client.firstName}}</span>, что для Вас наиболее важно при организации Вашего путешествия?</p>
+    <p class="text-center">
+        <textarea cols="100" rows="2" placeholder="Наиболее важные нюансы организации путешествия (питание, организация перелёта, размещение, удобный график прилета/отлета и т.п.)" ng-model="client.importantNuances">
+        </textarea>
+    </p>
+    <hr>
+    <p ng-if="client.importantNuances">Почему?</p>
+    <p class="text-center" ng-if="client.importantNuances">
+        <textarea cols="100" rows="2" placeholder="Мотивация причин указанных выше" ng-model="client.importantNuancesMotivation">
+        </textarea>
+    </p>
+    <hr ng-if="client.importantNuances">
+</div>
+<div ng-if="client.importantNuancesMotivation">
+    <p>Какие дополнительные услуги Вы, обычно, бронируете заранее?</p>
+    <p class="text-center">
+        <textarea cols="100" rows="2" ng-model="client.earlyReserve" placeholder="Услуги, заказываемые заранее (няня, СПА, экскурсии и т.п.)"></textarea>
+    </p>
+    <hr>
+</div>
+<div ng-if="client.earlyReserve">
+    <p>Услугами каких туристических компаний Вы пользовались ранее?</p>
+    <p class="text-center">
+        <label class="radio-inline">
+            <input type="radio" ng-model="page.earlyAgency" ng-value=true name="earlyAgency">пользовался
+        </label>&nbsp;&nbsp;&nbsp;
+        <label class="radio-inline">
+            <input type="radio" ng-model="page.earlyAgency" ng-value=false name="earlyAgency" ng-change="page.step8=true">не пользовался
+        </label>
+    </p>
+    <p class="text-center" ng-if="page.earlyAgency">
+        <textarea cols="100" rows="2" ng-model="client.earlyAgency" placeholder="Туристические компании, с которыми путешествовал(а) ранее"></textarea>
+    </p>
+    <hr ng-if="page.earlyAgency">
+    <p ng-if="client.earlyAgency&&page.earlyAgency">Почему решили поменять компанию?</p>
+    <p class="text-center" ng-if="client.earlyAgency&&page.earlyAgency">
+        <textarea cols="100" rows="2" ng-model="client.earlyAgencyChangeCause" placeholder="Причина, покоторой отказались от прежнего турагентства"></textarea>
+    </p>
+    <hr ng-if="client.earlyAgency&&page.earlyAgency">
+    <p ng-if="client.earlyAgencyChangeCause&&page.earlyAgency">Что Вас не устраивало в их работе?</p>
+    <p class="text-center" ng-if="client.earlyAgencyChangeCause&&page.earlyAgency">
+        <textarea cols="100" rows="2" ng-model="client.earlyAgencyMinus" placeholder="Косяки прежнего турагентства"></textarea>
+    </p>
+    <hr ng-if="client.earlyAgencyChangeCause&&page.earlyAgency||page.step8&&!page.earlyAgency">
+</div>

@@ -1,0 +1,44 @@
+<div class="panel panel-primary" ng-controller="listCtrl">
+    <div class="panel-heading">
+        <h2 class="text-center">Менеджер {{current.name}}</h2>
+        <p>
+            Всего туристов: <span class="label label-info">{{page.items.length}}</span>
+        </p>
+        <p>Отображать:
+            <select class="text-info" ng-model="page.limitValue" ng-options="item.name for item in page.limitRange track by item.value"></select>
+        </p>
+        <p>Фильтровать:
+            <select class="text-info" ng-model="page.filterValue" ng-options="item.name for item in page.filterRange track by item.value"></select>
+        </p>
+    </div>
+    <div class="panel-body" ng-if="current.name">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Дата</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Страна</th>
+                    <th>Подробнее</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in page.items | limitTo : page.limitValue.value | orderBy : page.filterValue.value">
+                    <td>{{item.startTalk | date : "dd MMMM yyyy EEEE"}}</td>
+                    <td class="text-capitalize">{{item.lastName}}</td>
+                    <td class="text-capitalize">{{item.firstName}}</td>
+                    <td class="text-capitalize">{{item.country}}</td>
+                    <td>
+                        <button class="btn btn-success pull-right" ng-click="page.showMore(item._id)">Подробнее</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <button class="btn btn-large btn-primary" ng-click="goHome()">Вернуться</button>
+        </div>
+    </div>
+    <div class="panel-footer panel-primary myFooter">
+        <p class="text-right">БЮРО ПУТЕШЕСТВИЙ {{current.year}}</p>
+    </div>
+</div>

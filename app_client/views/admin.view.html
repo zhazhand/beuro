@@ -1,0 +1,125 @@
+<div class="panel panel-primary" ng-controller="adminCtrl">
+    <div class="panel-heading">
+        <h2 class="text-center panel-header">Страница администратора</h2>
+    </div>
+    <div class="panel-body admin-panel">
+        <table class="table table-bordered" ng-if="admin">
+            <tbody>
+                <tr>
+                    <td>
+                        <button class="btn btn-block btn-success btn-lg" ng-click="showAll()">СПИСОК ТУРИСТОВ</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#adminDataModal">АДМИНИСТРАТОР</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-hover" ng-if="admin">
+            <thead>
+                <tr class="info">
+                    <th>Имя</th>
+                    <th>Логин</th>
+                    <th>Пароль</th>
+                    <th>Доступ</th>
+                    <th>Редактировать/удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>
+                        <input type="text" ng-model="item.name" ng-click="editTr(items, item)">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="item.login" ng-click="editTr(items, item)">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="item.password" ng-click="editTr(items, item)">
+                    </td>
+                    <td>
+                        <input type="checkbox" ng-model="item.admission" ng-click="editTr(items, item)">
+                    </td>
+                    <td>
+                        <button class="btn btn-success" ng-if="item.login!='admin'" ng-disabled="!item.edit" ng-click="save(item)">Сохранить</button>
+                        <button class="btn btn-danger pull-right" ng-disabled="!item.edit" ng-click="showModal(item)" data-toggle="modal" data-target="#adminModal">Удалить</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-hide="admin">
+            <p class="text-center text-warning">У Вас нет прав администратора!!!
+            </p>
+            <p class="text-center text-warning">Удалите в адресной строке <span class="text-danger">/admin</span> и нажмите кнопку
+                <button class="btn btn-default">ENTER &crarr;</button>на клавиатуре</p>
+
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-success" ng-click="addNewManager()" ng-if="admin">Добавить менеджера</button>
+            <button class="btn btn-primary" ng-click="backToStartPage()" ng-if="admin">Выйти</button>
+        </div>
+        <!-- HTML-код модального окна -->
+        <div id="adminModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Заголовок модального окна -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 class="modal-title">Удаление менеджера</h3>
+                    </div>
+                    <!-- Основное содержимое модального окна -->
+                    <div class="modal-body">
+                        <p>Перед удалением менеджера&nbsp;<span class="text-info">{{deletingManager.name}}</span>&nbsp;необходимо его туристов передать другому менеджеру.</p>
+                        <p>Передать менеджеру:&nbsp;
+                            <select ng-model="newManager" ng-options="item.name for item in managers track by item._id"></select>
+                        </p>
+                    </div>
+                    <!-- Футер модального окна -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary" ng-click="changeManagerAndDelete(newManager)">Сохранить изменения</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- HTML-код модального окна -->
+        <div id="adminDataModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Заголовок модального окна -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 class="modal-title">Изменение параметров администратора</h3>
+                    </div>
+                    <!-- Основное содержимое модального окна -->
+                    <div class="modal-body">
+                        <form name="adminForm" novalidate class="form-horizontal">
+                            <div class="form-group">
+                                <label for="adminOldValue" class="col-xs-5 control-label">Введите пароль:</label>
+                                <div class="col-xs-7">
+                                    <input id="adminOldValue" required type="password" ng-model="oldPass">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminNewValue" class="col-xs-5 control-label">Новый пароль:</label>
+                                <div class="col-xs-7">
+                                    <input id="adminNewValue" required type="password" ng-model="newPass" ng-minlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminNewValueRepeat" class="col-xs-5 control-label">Повторите новый пароль:</label>
+                                <div class="col-xs-7">
+                                    <input id="adminNewValueRepeat" required type="password" ng-model="repeatPass" ng-pattern="newPass">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Футер модального окна -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary" ng-click="changeAdminData(oldPass, newPass)" ng-disabled="adminForm.$invalid">Сохранить изменения</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

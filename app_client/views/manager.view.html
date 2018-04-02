@@ -1,0 +1,200 @@
+<div class="panel panel-primary" ng-controller="managerCtrl">
+    <div class="panel-heading">
+        <h2 class="text-center" ng-hide="page.newClient>1">Менеджер {{current.name}}</h2>
+        <table class="table" ng-show="page.newClient>1">
+            <caption class="manager"><span class="clientTb">Исходные данные туриста:</span>
+            </caption>
+            <tr>
+                <td>Имя: <span class="clientTb">{{client.firstName}}</span>
+                </td>
+                <td>Фамилия: <span class="clientTb">{{client.lastName}}</span>
+                </td>
+                <td>Пол: <span class="clientTb">{{client.gender}}</span>
+                </td>
+                <td>Страна: <span class="clientTb">{{client.country}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body bodyHeight" ng-if="current.name">
+        <div class="container-fluid" ng-hide="page.newClient">
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn-block btn-primary btn-lg" ng-click="page.newStep()">Новый турист</button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn-block btn-success btn-lg" ng-click="page.listOfTourists()">Список туристов</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" ng-show="page.newClient">
+            <div class="row startData">
+                <form name="clForm" ng-hide="page.newClient!=1">
+                    <div class="col-lg-12">
+                        <p class="text-center">
+                            Введите исходные данные туриста:
+                        </p>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="row">
+                            <label class="control-label col-lg-2">Имя:</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="client.firstName" ng-pattern="/^[а-яА-Я]+$/" name="clFName">
+                                <span ng-show="clForm.clFName.$error.pattern" style="color:crimson">Возможна только КИРИЛЛИЦА!</span>
+                            </div>
+
+                            <label class="control-label col-lg-2">Фамилия:</label>
+                            <div class="col-lg-4">
+                                <input type="text" ng-model="client.lastName" ng-pattern="/^[а-яА-Я]+$/" name="clLName">
+                                <span ng-show="clForm.clLName.$error.pattern" style="color:crimson">Возможна только КИРИЛЛИЦА!</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2 text">
+                                <span class="text-right fw-bold">Пол:</span>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="radio-inline fw-bold">
+                                    <input type="radio" ng-model="client.gender" name="clientGender" value="мужчина">мужчина
+                                </label>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="radio-inline fw-bold">
+                                    <input type="radio" ng-model="client.gender" name="clientGender" value="женщина">женщина
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="control-label col-lg-1">Страна:</label>
+                    <div class="col-lg-2">
+                        <select ng-model="page.selected" ng-options="item.name for item in countries" ng-hide="page.step7" ng-change="page.toSelect()"></select>
+                        <input type="text" ng-model="client.country" ng-show="page.step7" placeholder="Название страны" ng-pattern="/^[а-яА-Я]+(-[а-яА-Я]+)?$/" name="clCountry" ng-change="page.toInp()">
+                        <span ng-show="clForm.clCountry.$error.pattern" style="color:crimson">Возможна только КИРИЛЛИЦА!</span>
+                    </div>
+                </form>
+
+            </div>
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div ng-show="page.newClient==2">
+                <div ng-hide="page.comf">
+                    <p><span class="client">{{client.firstName}}</span>, здравствуйте!</p>
+                    <p>Меня зовут {{current.firstName}}. Я менеджер агентства БЮРО ПУТЕШЕСТВИЙ. Скажите пожалуйста: вижу Вашу заявку - планируете ехать в <span class="client">{{client.country}}</span>? Или ошибочно оставили?</p>
+                    <p class="text-center">
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="planVisit" name="planOrMistake" ng-value=true ng-change="mistOrPlan=true">Планирует
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" ng-model="planVisit" name="planOreMistake" ng-value=false ng-change="mistOrPlan=true">Ошибочно
+                        </label>
+                    </p>
+                    <p ng-if="planVisit"><span class="client">{{client.firstName}}</span>, мне нужно задать Вам ряд вопросов для того, чтобы понять какой отдых подобрать для Вас. Чем точнее я разберусь - тем точнее сможем подобрать самый лучший вариант отдыха.</p>
+                    <p ng-if="planVisit">Готовы начать?</p>
+                    <p ng-if="mistOrPlan&&!planVisit"><span class="client">{{client.firstName}}</span>, скажите, я могу помочь Вам в выборе отдыха или в других вопросах, связанных с путешествиями?</p>
+                    <div ng-if="mistOrPlan&&!planVisit">
+                        <p class="text-center">
+                            <label class="radio-inline">
+                                <input type="radio" ng-model="needHelp" name="needHelping" ng-value=true ng-change="page.comfort(1)">Да
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" ng-model="needHelp" name="needHelping" ng-value=false ng-change="stopTalkig=true">Нет
+                            </label>
+                        </p>
+                        <p ng-if="stopTalkig">ОК, <span class="client">{{client.firstName}}</span>, хорошего дня!</p>
+                    </div>
+                </div>
+                <div class="row" ng-hide="page.comf" ng-if="planVisit">
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <button class="btn-lg btn-primary btn-block" ng-click="page.comfort(1)">
+                            ДА
+                        </button>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn-lg btn-warning btn-block" ng-click="page.comfort(2)">
+                            НЕТ
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-show="page.comf==2">
+                    <div class="col-sm-12">
+                        <p>
+                            Вам будет удобно, если я наберу Вас через час?
+                        </p>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <button class="btn-lg btn-primary btn-block" ng-click="page.comfort(3)">
+                            ЕСЛИ УДОБНО
+                        </button>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn-lg btn-warning btn-block" ng-click="page.comfort(4)">
+                            ЕСЛИ НЕУДОБНО
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-show="page.comf==4">
+                    <div class="col-sm-12">
+                        <p>
+                            Когда Вам удобно, чтобы я Вас набрала?
+                        </p>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <div class="input-group">
+                            <input type="text" ng-model="client.wishDateCall" placeholder="когда набрать" style="width:100%;font-size: 30px">
+                            <div class="input-group-btn">
+                                <button class="btn-lg btn-primary" ng-disabled="!client.wishDateCall" ng-click="page.comfort(5)">Далее</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="page.comf==5">
+                    <div class="col-xs-12">
+                        <p>
+                            ОК, <span class="client">{{client.firstName}}</span>! Наберу Вас {{client.wishDateCall}}.
+                            <br>Хорошего дня!
+                        </p>
+                    </div>
+                </div>
+                <div class="row" ng-show="page.comf==3">
+                    <div class="col-xs-12">
+                        <p>
+                            Хорошо, <span class="client">{{client.firstName}}</span>! Наберу Вас через час.
+                        </p>
+                    </div>
+                </div>
+                <div ng-show="page.comf==1">
+                    <p>
+                        Отлично, <span class="client">{{client.firstName}}</span>!
+                    </p>
+                    <p>Ещё раз напомню: меня зовут {{current.firstName}}. Я буду Вашим личным менеджером, начиная с этого момента и до Вашего возвращения с отдыха.</p>
+                    <p>Итак, рассказывайте...</p>
+                    <div class="row startData">
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <textarea cols="140" rows="4" placeholder="Даем клиенту высказаться (КАК МОЖНО ПОЛНЕЕ!), внимательно слушаем и вносим сюда его пожелания" ng-model="client.wishes">
+                            </textarea>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div ng-show="page.comf==1" deep-identification>
+
+                </div>
+                <div questioning-client></div>
+            </div>
+
+            <!--////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-8">
+                    <button class="btn-block btn-primary btn" ng-click="page.newStep()" ng-disabled="!(client.country&&client.gender&&client.lastName&&client.firstName)" ng-show="(!page.comf&&page.newClient==1)">Далее</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn-block btn-warning btn" ng-click="page.oldStep()" ng-hide="page.newClient>1">Назад</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer panel-primary myFooter">
+        <p class="text-right">БЮРО ПУТЕШЕСТВИЙ {{current.year}}</p>
+    </div>
+</div>

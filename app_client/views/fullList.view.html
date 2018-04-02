@@ -1,0 +1,97 @@
+<div class="panel panel-primary" ng-controller="fullListCtrl">
+    <div class="panel-heading">
+        <h2 class="text-center">Администратор</h2>
+        <p>
+            Всего туристов: <span class="label label-info">{{page.items.length}}</span>&nbsp;&nbsp;&nbsp;сперва&nbsp;
+            <select class="text-info" ng-model="page.firstShow" ng-options="item.name for item in page.showRange track by item.value" ng-change="showFirst()"></select>
+        </p>
+        <div ng-if="page.firstShow.value">
+            <p>Отображать:
+                <select class="text-info" ng-model="page.limitValue" ng-options="item.name for item in page.limitRange track by item.value"></select>
+            </p>
+            <p>Упорядочить:
+                <select class="text-info" ng-model="page.filterValue" ng-options="item.name for item in page.filterRange track by item.value"></select>
+            </p>
+        </div>
+        <div ng-if="!page.firstShow.value">
+            <p>Фильтровать:
+                <select class="text-info" ng-model="page.additionFilters" ng-options="item.name for item in page.filters track by item.value" ng-change="changeFilter(page.additionFilters.value)"></select>&nbsp;&nbsp;&nbsp;
+                <select class="text-info" ng-model="page.filterChanged" ng-options="item as item.name for item in gettingFilter"></select>
+            </p>
+            <p>Отображать:
+                <select class="text-info" ng-model="page.limitValue" ng-options="item.name for item in page.limitRange track by item.value"></select>
+            </p>
+        </div>
+    </div>
+    <div class="panel-body" ng-if="current.name">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Дата</th>
+                    <th>Турист</th>
+                    <th>Страна</th>
+                    <th>Менеджер</th>
+                    <th>Подробнее</th>
+                    <th>Редактировать</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in page.items | limitTo : page.limitValue.value | orderBy : page.filterValue.value" ng-if="page.firstShow.value">
+                    <td>{{item.startTalk | date : "dd MMMM yyyy EEEE"}}</td>
+                    <td class="text-capitalize">{{item.lastName}}&nbsp;{{item.firstName}}</td>
+                    <td class="text-capitalize">{{item.country}}</td>
+                    <td class="text-capitalize">{{item.manager}}</td>
+                    <td>
+                        <button class="btn btn-success pull-right" ng-click="page.showMore(item._id)">Подробнее</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning pull-right" data-toggle="modal" data-target="#myModal" ng-click="getOldManager(item)">Поменять менеджера</button>
+                    </td>
+                </tr>
+                <tr ng-repeat="item in page.items | filter : selectItems| limitTo : page.limitValue.value" ng-if="!page.firstShow.value">
+                    <td>{{item.startTalk | date : "dd MMMM yyyy EEEE"}}</td>
+                    <td class="text-capitalize">{{item.lastName}}&nbsp;{{item.firstName}}</td>
+                    <td class="text-capitalize">{{item.country}}</td>
+                    <td class="text-capitalize">{{item.manager}}</td>
+                    <td>
+                        <button class="btn btn-success pull-right" ng-click="page.showMore(item._id)">Подробнее</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning pull-right" data-toggle="modal" data-target="#myModal" ng-click="getOldManager(item)">Поменять менеджера</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <button class="btn btn-large btn-primary" ng-click="goHome()">Вернуться</button>
+        </div>
+    </div>
+    <div class="panel-footer panel-primary myFooter">
+        <p class="text-right">БЮРО ПУТЕШЕСТВИЙ {{current.year}}</p>
+    </div>
+    <!-- HTML-код модального окна -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Заголовок модального окна -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title">Смена менеджера, прикрепленного к туристу</h3>
+                </div>
+                <!-- Основное содержимое модального окна -->
+                <div class="modal-body">
+                    <p>Текущий менеджер:&nbsp;<span class="text-info">{{updatingTourist.manager}}</span></p>
+                    <p>Новый менеджер:&nbsp;
+                        <select ng-model="newManager" ng-options="item.name for item in managers track by item._id"></select>
+                    </p>
+                </div>
+                <!-- Футер модального окна -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveNewManager(newManager)">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
