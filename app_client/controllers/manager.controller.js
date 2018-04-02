@@ -12,7 +12,7 @@
         }
         $scope.current = $location.search();
 
-        $http.get("countries.json").then(function(response) {
+        $http.get("api/country").then(function(response) {
             $scope.countries = response.data;
 
         }, function(data, status, headers, config) {
@@ -42,7 +42,7 @@
         $scope.client = {}; //текущий турист
 
         function toSetRegion() {
-            let country = $scope.client.country;
+            var country = $scope.client.country;
             for (var i = 0; i < $scope.countries.length; i++) {
                 var arrayCountry = $scope.countries[i].name;
                 if (country.toLowerCase() == arrayCountry.toLowerCase()) {

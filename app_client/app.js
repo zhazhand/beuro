@@ -2,6 +2,7 @@
 
     angular.module('bpApp', ['ngRoute']);
 
+    config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
