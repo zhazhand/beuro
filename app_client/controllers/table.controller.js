@@ -28,7 +28,7 @@
                 $log.log(config);
             });
         //        }
-        $scope.goHome = function() {$log.log($scope.current.name);
+        $scope.goHome = function() {
             $scope.current.member = {};
             $scope.current.member.name = $scope.current.name;
             $scope.current.member._id = $scope.current._id;
