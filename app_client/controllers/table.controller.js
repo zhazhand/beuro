@@ -4,7 +4,7 @@
         .module('bpApp')
         .controller('tableCtrl', tbCtrl);
 
-    tbCtrl.$inject = ['$scope', '$location', '$http', '$location', '$log', 'bpCurrent'];
+    tbCtrl.$inject = ['$scope', '$location', '$http', '$log', 'bpCurrent'];
     function tbCtrl($scope, $location, $http, $log, bpCurrent) {
 
 
