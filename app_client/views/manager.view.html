@@ -39,13 +39,13 @@
                         <div class="row">
                             <label class="control-label col-lg-2">Имя:</label>
                             <div class="col-lg-4">
-                                <input type="text" ng-model="client.firstName" ng-pattern="/^[а-яА-Я]+$/" name="clFName">
+                                <input type="text" ng-model="client.firstName" ng-pattern="/^[а-яА-Я]+$/" name="clFName" class="firstInput">
                                 <span ng-show="clForm.clFName.$error.pattern" style="color:crimson">Возможна только КИРИЛЛИЦА!</span>
                             </div>
 
                             <label class="control-label col-lg-2">Фамилия:</label>
                             <div class="col-lg-4">
-                                <input type="text" ng-model="client.lastName" ng-pattern="/^[а-яА-Я]+$/" name="clLName">
+                                <input type="text" ng-model="client.lastName" ng-pattern="/^[а-яА-Я]+$/" name="clLName" class="firstInput">
                                 <span ng-show="clForm.clLName.$error.pattern" style="color:crimson">Возможна только КИРИЛЛИЦА!</span>
                             </div>
                         </div>
