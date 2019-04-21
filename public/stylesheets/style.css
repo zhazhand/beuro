@@ -43,6 +43,9 @@ p {
     margin-top: 20px;
     margin-bottom: 50px;
 }
+.startData textarea{
+    width:100%;
+}
 caption.manager > .clientTb {
     text-transform: none;
     color: #fff;
