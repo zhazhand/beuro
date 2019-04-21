@@ -4,17 +4,22 @@
         .module('bpApp')
         .controller('banCtrl', banCtrl);
 
-    banCtrl.$inject = ['$scope', '$location', 'bpCurrent'];
-    function banCtrl($scope, $location, bpCurrent) {
+    banCtrl.$inject = ['$scope', '$location', 'bpCurrent', '$window'];
+    function banCtrl($scope, $location, bpCurrent, $window) {
         if (bpCurrent.getCurrent()) {
             var tmpCurrent = bpCurrent.getCurrent();
-            var str = 'year=' + tmpCurrent.year + '&_id=' + tmpCurrent.member._id + '&name=' + tmpCurrent.member.name;
-            $location.search(str);
+            var str = {};
+            str.year = tmpCurrent.year;
+            str._id = tmpCurrent.member._id;
+            str.name = tmpCurrent.member.name;
+            $window.sessionStorage.setItem("current",JSON.stringify(str));
         }
-        $scope.current = $location.search();
-        
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
+        if (!$scope.current) {
+            $location.path("/");
+        }
         $scope.goHome = function(){
-            $location.search("");
+            
             $location.path("/");
         }
     }
