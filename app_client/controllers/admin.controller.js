@@ -8,18 +8,21 @@
 
         if (bpCurrent.getCurrent()) {
             var tmpCurrent = bpCurrent.getCurrent();
-            $window.sessionStorage.setItem("_id",tmpCurrent.member._id);
-            var str = 'year=' + tmpCurrent.year + '&_id=' + tmpCurrent.member._id + '&name=' + tmpCurrent.member.name;
-            $location.search(str);
+            var str = {};
+            str.year = tmpCurrent.year;
+            str._id = tmpCurrent.member._id;
+            str.name = tmpCurrent.member.name;
+            $window.sessionStorage.setItem("current",JSON.stringify(str));
         }
-        $scope.current = $location.search();
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
         $scope.admin = $scope.current._id ? true : false;
 
-        if($scope.current._id===$window.sessionStorage.getItem("_id")){getManagerList();}
+        if($scope.admin){getManagerList();}
 
         $scope.backToStartPage = function() {
             $location.search("");
             $location.path("/");
+		//$window.sessionStorage.clear();console.log("SESSION STORAGE CLEAR!!!!!");
         };
 
         $scope.editTr = function(parametr1, parametr2) {
