@@ -22,7 +22,7 @@
         $scope.backToStartPage = function() {
             $location.search("");
             $location.path("/");
-		//$window.sessionStorage.clear();console.log("SESSION STORAGE CLEAR!!!!!");
+	    $window.sessionStorage.clear();//console.log("SESSION STORAGE CLEAR!!!!!");
         };
 
         $scope.editTr = function(parametr1, parametr2) {
