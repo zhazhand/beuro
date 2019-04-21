@@ -15,7 +15,7 @@
             $window.sessionStorage.setItem("current",JSON.stringify(str));
         }
         $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
-        $scope.admin = $scope.current._id ? true : false;
+        $scope.admin = $scope.current.name === 'Администратор' ? true : false;
 
         if($scope.admin){getManagerList();}
 
