@@ -23,6 +23,7 @@
             $location.search("");
             $location.path("/");
 	    $window.sessionStorage.clear();//console.log("SESSION STORAGE CLEAR!!!!!");
+		$window.sessionStorage.setItem("current.name","NEW");
         };
 
         $scope.editTr = function(parametr1, parametr2) {
