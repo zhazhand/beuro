@@ -4,19 +4,22 @@
         .module('bpApp')
         .controller('tableCtrl', tbCtrl);
 
-    tbCtrl.$inject = ['$scope', '$location', '$http', '$log', 'bpCurrent'];
-    function tbCtrl($scope, $location, $http, $log, bpCurrent) {
-
+    tbCtrl.$inject = ['$scope', '$location', '$http', '$log', 'bpCurrent', '$window'];
+    function tbCtrl($scope, $location, $http, $log, bpCurrent, $window) {
 
         if (bpCurrent.getCurrent()) {
             var tmpCurrent = bpCurrent.getCurrent();
-            var str = 'year=' + tmpCurrent.year + '&_id=' + tmpCurrent._id + '&name=' + tmpCurrent.name + '&tourist_id=' + tmpCurrent.tourist_id;
-            $location.search(str);
+            var str = {};
+            str.year = tmpCurrent.year;
+            str._id = tmpCurrent._id;
+            str.name = tmpCurrent.name;
+            str.tourist_id = tmpCurrent.tourist_id;
+            $window.sessionStorage.setItem("current",JSON.stringify(str));
         }
-        $scope.current = $location.search();
-        //        if (bpCurrent.getCurrent()) {
-        //        var currentTourist = bpCurrent.getCurrent();
-
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
+        if (!$scope.current) {
+            $location.path("/");
+        }        
         $http.get("/api/tourist/tourist_id/" + $scope.current.tourist_id)
             .then(function(response) {
 
