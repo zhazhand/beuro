@@ -4,10 +4,14 @@
         .module('bpApp')
         .controller('listCtrl', clientListCtrl);
 
-    clientListCtrl.$inject = ['$scope', '$location', '$http', '$log', 'bpCurrent'];
-    function clientListCtrl($scope, $location, $http, $log, bpCurrent) {
+    clientListCtrl.$inject = ['$scope', '$location', '$http', '$log', 'bpCurrent', '$window'];
+    function clientListCtrl($scope, $location, $http, $log, bpCurrent, $window) {
 
-        $scope.current = $location.search();
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
+        if (!$scope.current) {
+            $location.path("/");
+        }
+        
         $scope.page = {};
         $scope.page.items=[];
         $http.get("/api/tourist/touristes_list/" + $scope.current._id)
@@ -21,7 +25,7 @@
                     $log.log(config);
                 });
 //        if (bpCurrent.getCurrent()) {
-           $log.log($scope.page.items.length); 
+//           $log.log($scope.page.items.length); 
             
 
             $scope.page.limitRange = [{
