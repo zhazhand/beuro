@@ -3,14 +3,20 @@
         .module('bpApp')
         .controller('managerCtrl', managerCtrl);
 
-    managerCtrl.$inject = ['$scope', '$http', '$location', '$log', 'bpCurrent'];
-    function managerCtrl($scope, $http, $location, $log, bpCurrent) {
+    managerCtrl.$inject = ['$scope', '$http', '$location', '$log', 'bpCurrent', '$window'];
+    function managerCtrl($scope, $http, $location, $log, bpCurrent, $window) {
         if (bpCurrent.getCurrent()) {
             var tmpCurrent = bpCurrent.getCurrent();
-            var str = 'year=' + tmpCurrent.year + '&_id=' + tmpCurrent.member._id + '&name=' + tmpCurrent.member.name;
-            $location.search(str);
+            var str = {};
+            str.year = tmpCurrent.year;
+            str._id = tmpCurrent.member._id;
+            str.name = tmpCurrent.member.name;
+            $window.sessionStorage.setItem("current",JSON.stringify(str));
         }
-        $scope.current = $location.search();
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
+        if (!$scope.current) {
+            $location.path("/");
+        }
 
         $http.get("api/country").then(function(response) {
             $scope.countries = response.data;
