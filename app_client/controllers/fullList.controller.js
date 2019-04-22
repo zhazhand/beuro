@@ -1,13 +1,18 @@
-(function() {
+(function () {
 
     angular
         .module('bpApp')
         .controller('fullListCtrl', allListCtrl);
 
     allListCtrl.$inject = ['$scope', '$location', '$http', '$log', '$window', '$document', 'bpCurrent'];
+
     function allListCtrl($scope, $location, $http, $log, $window, $document, bpCurrent) {
 
-        $scope.current = $location.search();
+        $scope.current = JSON.parse($window.sessionStorage.getItem("current"));
+        if (!$scope.current) {
+            $location.path("/");
+        }
+        
         $scope.gettingFilter = [];
         getCountries();
         getManagers();
@@ -68,7 +73,7 @@
         $scope.page.firstShow = $scope.page.showRange[0];
         $scope.page.additionFilters = $scope.page.filters[0];
 
-        $scope.monthes = (function() {
+        $scope.monthes = (function () {
             var result = [];
             var monthes = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
             for (var i = 0; i < monthes.length; i++) {
@@ -79,7 +84,7 @@
             return result
         })();
 
-        $scope.changeFilter = function(par) {
+        $scope.changeFilter = function (par) {
             var result;
             switch (par) {
                 case 'manager':
@@ -94,13 +99,13 @@
             }
             $scope.gettingFilter = result;
         }
-        
-        $scope.getOldManager = function(par) {
-            $scope.updatingTourist = par;   //турист, у которого меняется менеджер
+
+        $scope.getOldManager = function (par) {
+            $scope.updatingTourist = par; //турист, у которого меняется менеджер
         }
 
-        $scope.saveNewManager = function(par) {
-            if (!par||$scope.updatingTourist.manager == par.name) {
+        $scope.saveNewManager = function (par) {
+            if (!par || $scope.updatingTourist.manager == par.name) {
                 $window.alert('Нужно выбрать НОВОГО менеджера!');
             } else {
                 var newManager = {};
@@ -108,28 +113,28 @@
                 newManager.index_id = par._id;
                 newManager.manager = par.name;
                 $http.put("/api/tourist", newManager)
-                .then(function(response) {
-                    $log.log('success', response.data);
-                    getTouristes();
-                    angular.element("#myModal").modal('hide');
-                }, function() {
-                    $log.log('error');
-                });
+                    .then(function (response) {
+                        $log.log('success', response.data);
+                        getTouristes();
+                        angular.element("#myModal").modal('hide');
+                    }, function () {
+                        $log.log('error');
+                    });
             }
         }
 
-        $scope.page.showMore = function(par) {
+        $scope.page.showMore = function (par) {
             $scope.current.tourist_id = par;
             bpCurrent.setCurrent($scope.current);
             $location.path("/table");
         }
 
-        $scope.goHome = function() {
+        $scope.goHome = function () {
             bpCurrent.setCurrent("");
             $location.path("/admin");
         }
 
-        $scope.selectItems = function(item) {
+        $scope.selectItems = function (item) {
             if ($scope.page.filterChanged) {
                 switch ($scope.page.additionFilters.value) {
                     case 'manager':
@@ -150,22 +155,22 @@
 
         function getTouristes() {
             $http.get("/api/tourist")
-            .then(function(response) {
-                $scope.page.items = response.data;
-                $scope.len = $scope.page.items.length;
-            }, function(data, status, headers, config) {
-                $log.log(data);
-                $log.log(status);
-                $log.log(headers);
-                $log.log(config);
-            });
+                .then(function (response) {
+                    $scope.page.items = response.data;
+                    $scope.len = $scope.page.items.length;
+                }, function (data, status, headers, config) {
+                    $log.log(data);
+                    $log.log(status);
+                    $log.log(headers);
+                    $log.log(config);
+                });
         }
-        
+
         function getCountries() {
-            $http.get("/api/country").then(function(response) {
+            $http.get("/api/country").then(function (response) {
                 var countries = response.data;
                 $scope.countries = convertData(countries, 'name', 'ДРУГАЯ');
-            }, function(data, status, headers, config) {
+            }, function (data, status, headers, config) {
                 $log.log(data);
                 $log.log(status);
                 $log.log(headers);
@@ -174,11 +179,11 @@
         }
 
         function getManagers() {
-            $http.get("/api/manager").then(function(response) {
+            $http.get("/api/manager").then(function (response) {
                 $scope.managers = response.data;
-                
+
                 $scope.gettingFilter = $scope.managers;
-            }, function(data, status, headers, config) {
+            }, function (data, status, headers, config) {
                 $log.log(data);
                 $log.log(status);
                 $log.log(headers);
